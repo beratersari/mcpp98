@@ -6,3 +6,18 @@ if(NOT DEFINED CMAKE_CXX_STANDARD)
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+function(mcpp98_warnings target)
+    if(MSVC)
+        target_compile_options(${target} PRIVATE /W4 /Zc:__cplusplus)
+    else()
+        target_compile_options(${target} PRIVATE -Wall -Wextra -pedantic -Werror)
+    endif()
+endfunction()
+
+add_library(mcpp98
+    src/error.cpp
+)
+target_include_directories(mcpp98 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+mcpp98_warnings(mcpp98)
+
