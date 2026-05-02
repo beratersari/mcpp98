@@ -22,3 +22,15 @@ add_library(mcpp98
 target_include_directories(mcpp98 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 mcpp98_warnings(mcpp98)
 
+include(CTest)
+if(BUILD_TESTING)
+    add_executable(mcpp98_tests
+        tests/main.cpp
+        tests/test_json.cpp
+    )
+    target_link_libraries(mcpp98_tests PRIVATE mcpp98)
+    target_include_directories(mcpp98_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+    mcpp98_warnings(mcpp98_tests)
+    add_test(NAME mcpp98_tests COMMAND mcpp98_tests)
+endif()
+
