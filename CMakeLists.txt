@@ -18,6 +18,7 @@ endfunction()
 add_library(mcpp98
     src/error.cpp
     src/json.cpp
+    src/rpc.cpp
 )
 target_include_directories(mcpp98 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 mcpp98_warnings(mcpp98)
