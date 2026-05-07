@@ -21,6 +21,7 @@ add_library(mcpp98
     src/rpc.cpp
     src/tool.cpp
     src/session.cpp
+    src/server.cpp
     src/stdio_transport.cpp
 )
 target_include_directories(mcpp98 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
