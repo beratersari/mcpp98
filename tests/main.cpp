@@ -1,11 +1,13 @@
 #include <cstdio>
 
 int test_json();
+int test_session();
 
 int main()
 {
     int failed = 0;
     failed += test_json();
+    failed += test_session();
     if (failed != 0) {
         std::fprintf(stderr, "%d check(s) failed\n", failed);
         return 1;
