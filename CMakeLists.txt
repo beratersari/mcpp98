@@ -27,6 +27,10 @@ add_library(mcpp98
 target_include_directories(mcpp98 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 mcpp98_warnings(mcpp98)
 
+add_executable(echo_server examples/echo_server.cpp)
+target_link_libraries(echo_server PRIVATE mcpp98)
+mcpp98_warnings(echo_server)
+
 include(CTest)
 if(BUILD_TESTING)
     add_executable(mcpp98_tests
