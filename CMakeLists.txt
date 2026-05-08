@@ -43,5 +43,9 @@ if(BUILD_TESTING)
     target_include_directories(mcpp98_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
     mcpp98_warnings(mcpp98_tests)
     add_test(NAME mcpp98_tests COMMAND mcpp98_tests)
+    add_test(
+        NAME stdio_smoke
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/stdio_smoke.sh $<TARGET_FILE:echo_server>
+    )
 endif()
 
