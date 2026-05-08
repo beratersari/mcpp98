@@ -33,6 +33,7 @@ if(BUILD_TESTING)
         tests/main.cpp
         tests/test_json.cpp
         tests/test_session.cpp
+        tests/test_server.cpp
     )
     target_link_libraries(mcpp98_tests PRIVATE mcpp98)
     target_include_directories(mcpp98_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
