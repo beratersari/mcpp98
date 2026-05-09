@@ -62,6 +62,9 @@ if(BUILD_TESTING)
         tests/test_session.cpp
         tests/test_server.cpp
     )
+    if(MCPP98_STD_RANK GREATER_EQUAL 2011)
+        target_sources(mcpp98_tests PRIVATE tests/test_ext_11.cpp)
+    endif()
     target_link_libraries(mcpp98_tests PRIVATE mcpp98)
     target_include_directories(mcpp98_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
     mcpp98_warnings(mcpp98_tests)

@@ -4,12 +4,19 @@ int test_json();
 int test_session();
 int test_server();
 
+#if __cplusplus >= 201103L
+int test_ext_11();
+#endif
+
 int main()
 {
     int failed = 0;
     failed += test_json();
     failed += test_session();
     failed += test_server();
+#if __cplusplus >= 201103L
+    failed += test_ext_11();
+#endif
     if (failed != 0) {
         std::fprintf(stderr, "%d check(s) failed\n", failed);
         return 1;
