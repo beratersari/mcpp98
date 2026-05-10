@@ -8,6 +8,10 @@ int test_server();
 int test_ext_11();
 #endif
 
+#if __cplusplus >= 202302L
+int test_ext_23();
+#endif
+
 int main()
 {
     int failed = 0;
@@ -16,6 +20,9 @@ int main()
     failed += test_server();
 #if __cplusplus >= 201103L
     failed += test_ext_11();
+#endif
+#if __cplusplus >= 202302L
+    failed += test_ext_23();
 #endif
     if (failed != 0) {
         std::fprintf(stderr, "%d check(s) failed\n", failed);
