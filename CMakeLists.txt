@@ -54,6 +54,12 @@ if(MCPP98_STD_RANK GREATER_EQUAL 2011)
     mcpp98_warnings(echo_server_11)
 endif()
 
+if(MCPP98_STD_RANK GREATER_EQUAL 2023)
+    add_executable(echo_server_23 examples/echo_server_23.cpp)
+    target_link_libraries(echo_server_23 PRIVATE mcpp98)
+    mcpp98_warnings(echo_server_23)
+endif()
+
 include(CTest)
 if(BUILD_TESTING)
     add_executable(mcpp98_tests
