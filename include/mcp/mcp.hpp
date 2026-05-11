@@ -14,7 +14,8 @@
 //
 // Sources under src/ are the C++98 and C++23 intersection. Optional headers
 // under mcp/ext/ are compiled only by the standard they require:
-//   ext/function_tool.hpp   C++11   std::function / lambda tools
+//   ext/tool_builder.hpp    C++11   name, arguments, and a handler
+//   ext/function_tool.hpp   C++11   handler that sees the raw JSON
 //   ext/expected_tool.hpp   C++23   std::expected tools
 // The umbrella header does not include ext/.
 
