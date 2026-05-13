@@ -6,6 +6,7 @@ int test_server();
 
 #if __cplusplus >= 201103L
 int test_ext_11();
+int test_tool_builder();
 #endif
 
 #if __cplusplus >= 202302L
@@ -20,6 +21,7 @@ int main()
     failed += test_server();
 #if __cplusplus >= 201103L
     failed += test_ext_11();
+    failed += test_tool_builder();
 #endif
 #if __cplusplus >= 202302L
     failed += test_ext_23();

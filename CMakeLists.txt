@@ -69,7 +69,7 @@ if(BUILD_TESTING)
         tests/test_server.cpp
     )
     if(MCPP98_STD_RANK GREATER_EQUAL 2011)
-        target_sources(mcpp98_tests PRIVATE tests/test_ext_11.cpp)
+        target_sources(mcpp98_tests PRIVATE tests/test_ext_11.cpp tests/test_tool_builder.cpp)
     endif()
     if(MCPP98_STD_RANK GREATER_EQUAL 2023)
         target_sources(mcpp98_tests PRIVATE tests/test_ext_23.cpp)
