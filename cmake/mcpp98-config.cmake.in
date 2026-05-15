@@ -1,0 +1,24 @@
+# Relocatable package. The static library was compiled as one C++ standard.
+# Compile the application as that same standard.
+
+get_filename_component(_mcpp98_libdir "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
+get_filename_component(_mcpp98_include "${_mcpp98_libdir}/@MCPP98_INCLUDE_FROM_LIBDIR@" ABSOLUTE)
+
+set(_mcpp98_lib "${_mcpp98_libdir}/libmcpp98.a")
+if(NOT EXISTS "${_mcpp98_lib}")
+    set(_mcpp98_lib "${_mcpp98_libdir}/mcpp98.lib")
+endif()
+if(NOT EXISTS "${_mcpp98_lib}")
+    message(FATAL_ERROR "mcpp98 static library was not found in ${_mcpp98_libdir}")
+endif()
+
+if(NOT TARGET mcpp98::mcpp98)
+    add_library(mcpp98::mcpp98 STATIC IMPORTED GLOBAL)
+    set_target_properties(mcpp98::mcpp98 PROPERTIES
+        IMPORTED_LOCATION "${_mcpp98_lib}"
+        INTERFACE_INCLUDE_DIRECTORIES "${_mcpp98_include}")
+endif()
+
+set(mcpp98_VERSION "@PROJECT_VERSION@")
+set(mcpp98_INCLUDE_DIR "${_mcpp98_include}")
+set(mcpp98_LIBRARY "${_mcpp98_lib}")

@@ -85,5 +85,16 @@ if(BUILD_TESTING)
 endif()
 
 include(GNUInstallDirs)
+
+file(RELATIVE_PATH MCPP98_INCLUDE_FROM_LIBDIR
+    "/prefix/${CMAKE_INSTALL_LIBDIR}"
+    "/prefix/${CMAKE_INSTALL_INCLUDEDIR}")
+configure_file(
+    cmake/mcpp98-config.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/mcpp98-config.cmake"
+    @ONLY)
+
 install(TARGETS mcpp98 ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/mcpp98-config.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mcpp98)
