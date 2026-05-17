@@ -1,0 +1,32 @@
+name: Libraries
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  package:
+    name: C++${{ matrix.std }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        std: ["98", "11", "14", "17", "20", "23"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zip
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Package
+        run: ./scripts/package-lib.sh "${{ matrix.std }}" dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mcpp98-cpp${{ matrix.std }}-${{ runner.os }}-${{ runner.arch }}
+          path: dist/*.zip
+          if-no-files-found: error
