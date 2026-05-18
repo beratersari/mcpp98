@@ -30,3 +30,48 @@ jobs:
           name: mcpp98-cpp${{ matrix.std }}-${{ runner.os }}-${{ runner.arch }}
           path: dist/*.zip
           if-no-files-found: error
+
+  release:
+    name: Publish archives
+    needs: package
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          pattern: mcpp98-*
+          merge-multiple: true
+
+      - name: Publish the v0.1.0 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          files=$(find dist -name '*.zip' | sort)
+          if [ -z "$files" ]; then
+            echo "no archives to publish" >&2
+            exit 1
+          fi
+          tag=v0.1.0
+          notes=$(mktemp)
+          printf '%s\n' \
+            "Static libraries for C++98, C++11, C++14, C++17, C++20, and C++23." \
+            "" \
+            "Pick the zip whose standard, operating system, and processor match the program that will link it. macOS archives are built with Apple Clang. Linux archives are built with Ubuntu GCC." \
+            "" \
+            "A later push to main replaces the files on this tag." \
+            > "$notes"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            # shellcheck disable=SC2086
+            gh release upload "$tag" $files --clobber
+            gh release edit "$tag" --notes-file "$notes"
+          else
+            # shellcheck disable=SC2086
+            gh release create "$tag" $files \
+              --title "mcpp98 0.1.0" \
+              --notes-file "$notes"
+          fi
