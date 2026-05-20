@@ -72,6 +72,66 @@ Gövde hem metin hem hata döndürecekse dönüş tipi `mcp::Reply` olur.
 
 Araç nesnesi `run` bitene kadar yaşar. C++98'de aynı iş `examples/echo_server.cpp` içindeki `Tool` alt sınıfıdır. Ham JSON görmek için `mcp/ext/function_tool.hpp`, `std::expected` döndürmek için `mcp/ext/expected_tool.hpp`.
 
+## Hazır arşiv
+
+Kütüphaneyi projende derlemen gerekmez. CI her standart için ayrı bir statik kütüphane üretir ve [v0.1.0](https://github.com/beratersari/mcpp98/releases/tag/v0.1.0) release'ine koyar. `main` her güncellendiğinde bu release'in dosyaları yenilenir.
+
+Arşiv adı `mcpp98-0.1.0-cpp<standart>-<sistem>-<işlemci>.zip` biçimindedir. Apple Silicon Mac için C++11 arşivi `mcpp98-0.1.0-cpp11-macos-arm64.zip`, Linux x86_64 için `mcpp98-0.1.0-cpp11-linux-x86_64.zip` olur. Uygulamanın işletim sistemi, işlemcisi ve `CMAKE_CXX_STANDARD` değeri arşivdeki üç parçayla aynı olmalıdır. macOS arşivi Apple Clang ile, Linux arşivi Ubuntu GCC ile derlenir. Arşivi onu üreten derleyici ailesiyle bağla.
+
+`tool()` için standart en az C++11 olmalıdır. C++17 projesine `cpp17` arşivini bağla. `tool()` o standartta da çalışır.
+
+Açılmış arşiv:
+
+```
+mcpp98-0.1.0-cpp11-macos-arm64/
+  include/
+  lib/libmcpp98.a
+  lib/cmake/mcpp98/mcpp98-config.cmake
+  lib/pkgconfig/mcpp98.pc
+```
+
+`include/` başlıkları, `libmcpp98.a` derlenmiş çekirdeği taşır. `tool()` başlığı senin hedefinin standardıyla derlenir.
+
+CMake:
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+project(myapp LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+find_package(mcpp98 REQUIRED)
+
+add_executable(myapp main.cpp)
+target_link_libraries(myapp PRIVATE mcpp98::mcpp98)
+```
+
+```bash
+cmake -S . -B build -DCMAKE_PREFIX_PATH=$HOME/mcpp98-0.1.0-cpp11-macos-arm64
+cmake --build build
+```
+
+`main.cpp` yukarıdaki `tool()` örneğidir.
+
+CMake kullanmıyorsan aynı iş derleyici satırındadır:
+
+```bash
+c++ -std=c++11 \
+  -I$HOME/mcpp98-0.1.0-cpp11-macos-arm64/include \
+  main.cpp \
+  $HOME/mcpp98-0.1.0-cpp11-macos-arm64/lib/libmcpp98.a \
+  -o myapp
+```
+
+pkg-config ile:
+
+```bash
+export PKG_CONFIG_PATH=$HOME/mcpp98-0.1.0-cpp11-macos-arm64/lib/pkgconfig
+c++ -std=c++11 main.cpp $(pkg-config --cflags --libs mcpp98) -o myapp
+```
+
 ## Bu sürümde olmayanlar
 
 HTTP, SSE, OAuth, resources, prompts, pagination, progress, sampling. Bunlar çekirdeği büyütmeden, transport'un yanına eklenebilir. Pagination istenirse `tools/list` cursor'ı yok sayar ve listeyi tek parçada döner.
